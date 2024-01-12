@@ -1,0 +1,25 @@
+// To create database 
+ create database database_name;
+ 
+// To drop the database
+  drop database database_name;  
+
+// To backup database 
+   Backup databse database_name to disk='filepath';
+
+// To create table 
+ create table table_name(
+   variable_Name datatype
+   );
+ 
+// To insert values in the table 
+  insert values into table_name( 
+    value1,value2,value3);
+
+// To see all the records
+   select * from table_name 
+  
+ // TO See a specific value from the table 
+    select * from table_name where condition 
+
+     
