@@ -12,9 +12,13 @@
    variable_Name datatype
    );
  
-// To insert values in the table 
-  insert values into table_name( 
+// To insert values in the table
+1st way:-
+  insert into table_name values( 
     value1,value2,value3);
+2nd way:-
+   insert into table_name(column1,column2,column3) 
+      values(value1,value2,value3);
 
 // To see all the records
    select * from table_name 
