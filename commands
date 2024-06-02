@@ -1,0 +1,304 @@
+/* 
+SELECT STATEMENT
+TOP, DISTINCT,COUNT,AS,MAX,MIN,AVG  
+*/
+
+// avg 
+to get the average salary of all the employee 
+select avg(salary) as average_salary from employeeSalary;
+
+// if it is in master directory 
+select * from database_name.table_name.column_name
+
+// count 
+to count the number of entries
+select count(lastname)as lastnamecount from employeedemographic;
+
+// min 
+to get the min salary 
+select min(salary) as min_salary from employeeSalary;
+
+// max
+to get the max salary 
+select max(salary) as max_salary from employeeSalary;
+
+
+//top 
+to select top rows of the table 
+select Top 5 * from employeedemographic;
+
+// distinct 
+to select distinct items from a column 
+select distinct(gender) as di from employeedemographic;
+
+/* 
+where statement 
+=,<>,<,>, And,or, like,null,not null,in 
+*/
+
+// <>
+selecting all the rows except where firstName is jim 
+select * from employeedemographic where firstName <> 'jim';
+
+// =
+selecting the attributes where firstName jim is present
+select * from employeedemographic where firstName = 'jim';
+
+// < 
+selecting the entries where the salary of person is less than 10000
+select * from employeeSalary where salary<10000;
+
+// >
+selecting the entries where the salary of person is greater than 10000
+select * from employeeSalary where salary>10000;
+
+// And 
+selecting the entries which goes with both the condition 
+select salary from employeeSalary where firstName ='jim' and LastName ='corbett';
+
+// Or
+selecting the entries which goes with one of the given condition
+select salary from employeeSalary where firstName ='jim' or age=29;
+
+// Like 
+selecting the entries where it is like the expression 
+select * from employeeDemographic where firstName like 'j%m';
+
+// null
+selecting the entries where there are null values 
+select * from employeeDemographic where firstName is null;
+
+// not null
+selecting the entries where there are not null values
+select * from employeeSalary where salary is not null;
+
+
+// in 
+selecting the entries where in these values are present
+select * from employeeSalary where FirstName in ('jim','michael');
+ 
+/*
+group by ,order by 
+*/
+
+// group by 
+selecting the particular entries and group them by given condition 
+select gender,count(gender) from employeeDemographic group by gender;
+
+// order by
+selecting the particular entries by order 
+select * from employeeDemographic order by age desc ,gender desc
+
+
+/*
+Joins
+inner join,full/left/right outer joins 
+*/
+
+// inner join -> A INTERSECTION B 
+selecting all the thinks which have common on both the table and giving it as output
+select * from employeeDemographic inner join employeeSalary on
+       employeeDemographic.employeeid = employeeSalary.employeeid
+	  
+	  
+// FULL OUTER JOIN -> A UNION B  
+selecting each and every element present in both the table by mapping the 
+common criteria
+
+select * from employeeDemographic full outer join employeeSalary on 
+       employeeDemographic.employeeid = employeeSalary.employeeid;
+
+// LEFT OUTER JOIN 
+selecting the each and every present in left table with the overlapping or 
+not will be selected and will be displayed 
+
+select * from employeeDemographic left outer join employeeSalary on 
+         employeeDemographic.employeeid = employeeSalary.employeeid;
+		 
+		 
+// RIGHT OUTER JOIN 
+selecting the each and every entries present in right table with and without
+the overlapping of the left table and will be displayed 
+
+select * from employeeDemographic  right outer join employeeSalary on 
+            employeeDemographic.employeeid = employeeSalary.employeeid;
+	   
+	   
+	 
+	 
+/* 
+ UNION ,UNION ALL
+*/
+
+// Union 
+combining the result set of two or more selected statements
+
+select column_name from table1 union select column_name from table2; 
+
+it does not select any duplicate values
+
+// Union all
+same as that of union but it does not select the duplicate values
+
+select column_name from table1 union all select column_name from table2;
+
+/*
+case statement 
+*/
+
+// 
+To give a specfic condition and get a value out of it  
+select firstName,LastName,Age
+case 
+   when age>30 then 'old'
+   when age between 27 and 30 then 'young'
+   else 'baby'
+end 
+from employeeDemographic 
+where age is not null 
+order by age 
+
+// using having 
+
+select jobtitle,count(jobtitle) from 
+ employeeDemographic e join employeeSalary s on 
+     e.employeeid = s.employeeid
+	 group by jobtitle
+	 having count(jobtitle)>1
+	
+// another example 
+
+select jobtitle,avg(salary) from 
+  employeeDemographic e join employeeSalary s on 
+   e.employeeid = s.employeeid 
+   group by jobtitle
+   having avg(salary)>45000;
+   
+  
+/* 
+ deleting and updating data 
+*/
+
+// to update
+select * from employeeDemographic  
+
+update employeeDemographic 
+set  age = 31,gender ='female' 
+where employeeid=1012 
+
+
+// to delete
+delete from employeeDemographic
+where employeeid=1012
+
+/* 
+aliasing
+*/
+
+select FirstName + ' ' + lastname as fullname 
+from employeeDemographic;
+
+/* 
+partition by 
+*/
+
+select firstName,lastname,gender,salary
+  count(gender) over(partiton by gender) as totalgender
+  from employeeDemographic dem join 
+  employeeSalary sal on dem.employeeid = sal.employeeid
+ 
+ /* 
+ temp tables 
+ */
+ 
+ create table #temp_employee(
+    employeeid int,
+	jobtitle varchar(100),
+	salary int
+	) 
+	
+ select * from #temp_employee
+   
+   insert into #temp_employee values( 
+     '1001','hr','45000'
+	 )
+	 
+	 insert into #temp_employee 
+	 select * from employeeSalary
+	
+
+// how to drop table 
+
+drop table if exists #temp_employee;
+
+
+/*
+string function :- trim,ltrim,rtrim, replace,substring,upper,lower
+*/
+
+
+// trim,ltrim,rtrim
+
+select employeeid ,trim(employeeid) as idtrim
+from employeeerrors
+
+select employeeid ,ltrim(employeeid) as idtrim
+from employeeerrors
+
+select employeeid ,rtrim(employeeid) as idtrim
+from employeeerrors
+
+
+// using replace 
+
+select lastname replace(lastame ,'- Fired','') as LastNamefixed
+from employeeerrors
+
+// using substring 
+
+select substring(firstName,1,3)from employeerrors;
+
+
+// upper and lower 
+
+// lower -> will make all the alphabets to lower
+select firstName,lower(firstName) from employeerrors;
+
+// upper -> will make all the alphabets to upper
+select firstName,upper(firstName) from employeeerrors;
+
+// stored procedure
+
+create procedure test 
+as 
+select * from employeeDemographic
+
+// exec -> 
+exec test 
+
+create procedure temp_employee
+as 
+create table #temp_employee( 
+jobtitle varchar(100),
+employeeperjob int,
+avgage int,
+avgsalary int
+)
+
+insert into #temp_employee
+select jobtitle,count(jobtitle),avg(age),avg(salary) 
+from sqltutorial..employeeDemographic emp
+join sqltutorial..employeeSalary sal
+  on emp.employeeid = sal.employeeid
+group by jobtitle
+
+select * from #temp_employee
+
+
+
+
+
+
+
+
+
